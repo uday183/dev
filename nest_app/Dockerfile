@@ -4,12 +4,12 @@ FROM node:20.10.0
 # Set the working directory
 WORKDIR /app
 
-COPY /nest_app/package*.json ./
+COPY nest_app/package*.json ./
 
 RUN npm install
 
 # Copy files from your computer into the image
-COPY /nest_app/ .
+COPY nest_app/ .
 
 # Install the dependencies
 RUN npm install
