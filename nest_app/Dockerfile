@@ -2,12 +2,9 @@
 FROM node:20.10.0
 
 # Set the working directory
-WORKDIR usr/src/app
+WORKDIR /app
 
-# Copy application dependency manifests to the container image.
-# A wildcard is used to ensure copying both package.json AND package-lock.json (when available).
-# Copying this first prevents re-running npm install on every code change.
-COPY --chown=node:node package*.json ./
+COPY nest_app/package*.json ./
 
 RUN npm install
 
