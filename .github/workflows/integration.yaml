@@ -20,6 +20,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: "Navigate to nest_app directory"
+      run: cd nest_app
     - name: "Installing dependencies"
       run:  npm i
     - name: "Build command"
