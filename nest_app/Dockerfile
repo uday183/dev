@@ -5,7 +5,7 @@ FROM node:20.10.0
 WORKDIR /app
 
 # Copy package.json and package-lock.json files
-COPY package*.json ./
+COPY package.json ./
 
 # Copy files from your computer into the image
 COPY . .
