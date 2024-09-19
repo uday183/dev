@@ -22,7 +22,6 @@ jobs:
         cache: 'npm'
     - name: "Installing dependencies"
       run:  npm i
-      working-directory: nest_app
     - name: "Build command"
       run:  npm run build
 
