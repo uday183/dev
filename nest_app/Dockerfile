@@ -13,7 +13,6 @@ COPY . .
 # Install the dependencies
 RUN npm install
 
-
 # Specifies what command to run within the container
 CMD ["npm", "run", "start"]
 
