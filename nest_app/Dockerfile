@@ -1,6 +1,9 @@
 # Use the official Node.js image as the base image
 FROM node:20.10.0
 
+# Create a non-root user
+RUN useradd -m nestuser
+
 # Set the working directory
 WORKDIR /app
 
@@ -13,8 +16,11 @@ RUN npm install
 # Copy the rest of your application files
 COPY nest_app/ .
 
-# Debug: Check if necessary files are present
-RUN ls -la
+# Change ownership of the app files to the non-root user
+RUN chown -R nestuser:nestuser /app
+
+# Switch to the non-root user
+USER nestuser
 
 # Build the application
 RUN npm run build
