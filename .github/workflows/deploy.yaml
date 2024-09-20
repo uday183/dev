@@ -24,8 +24,8 @@ jobs:
 
     # Build the Docker image (specify the Dockerfile in the nest_app folder)
     - name: Build Docker image
-      run: docker build -f Dockerfile -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/nest-app:${{ github.sha }} .
-      working-directory: nest_app
+      run: docker build -f nest_app/Dockerfile -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/nest-app:${{ github.sha }} .
+      working-directory: .
 
     # Push the Docker image to Google Container Registry or Artifact Registry
     - name: Push Docker image
