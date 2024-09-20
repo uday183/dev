@@ -4,8 +4,9 @@ FROM node:20.10.0
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json files
-COPY package*.json ./app
+COPY package*.json ./
+
+RUN npm install
 
 # Copy files from your computer into the image
 COPY . .
@@ -17,5 +18,5 @@ RUN npm install
 # Specifies what command to run within the container
 CMD ["npm", "run", "start"]
 
-# Indicates that the container will listen on port 3000'
+# Indicates that the container will listen on port 3000
 EXPOSE 3000
