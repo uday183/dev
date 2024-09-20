@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of your application files
 COPY nest_app/ .
 
+# Debug: Check if necessary files are present
+RUN ls -la
+
 # Build the application
 RUN npm run build
 
