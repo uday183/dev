@@ -2,12 +2,12 @@ name: Deploy
 
 on:
   push:
-    branches: [ "main" ] #whenever their is an push to main
+    branches: [ "main" ]
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
 
@@ -18,23 +18,24 @@ jobs:
         service_account_key: ${{ secrets.GCLOUD_KEY }}
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-    # Configure Docker to authenticate with Google Container Registry or Artifact Registry
+    # Configure Docker to authenticate with Artifact Registry
     - name: Configure Docker to use Google Cloud
-      run: gcloud auth configure-docker
+      run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
-    # Build the Docker image (specify the Dockerfile in the nest_app folder)
+    # Build the Docker image (specify the Dockerfile in the nest_app folder and tag it for Artifact Registry)
     - name: Build Docker image
-      run: docker build -f nest_app/Dockerfile -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/nest-app:${{ github.sha }} .
+      run: docker build -f nest_app/Dockerfile -t us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:${{ github.sha }} .
       working-directory: .
 
-    # Push the Docker image to Google Container Registry or Artifact Registry
+    # Push the Docker image to Artifact Registry
     - name: Push Docker image
-      run: docker push us-central1-docker.pkg.dev/adev-spark/nestjs-cicd
-
+      run: docker push us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:${{ github.sha }}
 
     # Deploy to GKE
     - name: Get GKE credentials
       run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --zone ${{ secrets.GKE_CLUSTER_ZONE }}
+      
+    # Deploy to GKE
     - name: Deploy to GKE
       run: |
-        kubectl set image deployment/nest-app nest-app=gcr.io/${{ secrets.GCP_PROJECT_ID }}/nest-app:${{ github.sha }}
+        kubectl set image deployment/nest-app nest-app=us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:${{ github.sha }}
