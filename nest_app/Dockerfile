@@ -1,5 +1,5 @@
 # Use the official Node.js image as the base image
-FROM node:20.10.0
+FROM node:20
 
 # Create a non-root user
 RUN useradd -m nestuser
@@ -13,6 +13,12 @@ COPY nest_app/package*.json ./
 # Install the dependencies
 RUN npm install
 
+# Check permissions of the node_modules/.bin directory
+RUN ls -la node_modules/.bin
+
+# Install Nest CLI globally
+RUN npm install -g @nestjs/cli
+
 # Copy the rest of your application files
 COPY nest_app/ .
 
@@ -22,8 +28,8 @@ RUN chown -R nestuser:nestuser /app
 # Switch to the non-root user
 USER nestuser
 
-# Build the application
-RUN npm run build
+# Build the application using shell
+RUN sh -c "npm run build"
 
 # Specifies what command to run within the container
 CMD ["npm", "run", "start"]
