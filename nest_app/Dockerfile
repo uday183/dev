@@ -10,14 +10,14 @@ COPY package*.json ./
 RUN npm install
 
 # Copy files from your computer into the image
-COPY . .
+COPY nest_app/ .
 
 # Install the dependencies
 RUN npm run build
 
-# Indicates that the container will listen on port 3000
-EXPOSE 3000
-
 # Specifies what command to run within the container
 CMD ["npm", "run", "start"]
+
+# Indicates that the container will listen on port 3000
+EXPOSE 3000
 
