@@ -18,8 +18,10 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        path: nest_app/node_modules
+        key: ${{ runner.os }}-npm-${{ hashFiles('nest_app/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
     - name: "Installing dependencies"
       working-directory: nest_app
       run:  npm ci
