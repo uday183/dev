@@ -1,41 +1,39 @@
-name: Deploy
+name: Build and Push to Artifact Registry
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
-jobs:
-  release:
+env:
+  GAR_LOCATION: us-central1-docker.pkg.dev/adev-spark/nestjs-cicd
+
+job:
+  build-push-artifact:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
 
-    # Authenticate with Google Cloud
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        service_account_key: ${{ secrets.GCLOUD_KEY }}
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
+      - id: "auth"
+          uses: "google-github-actions/auth@v1"
+          with:
+            credentials_json: "${{ secrets.SERVICE_ACCOUNT_KEY }}"
 
-    # Configure Docker to authenticate with Artifact Registry
-    - name: Configure Docker to use Google Cloud
-      run: gcloud auth configure-docker us-central1-docker.pkg.dev
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
 
-    # Build the Docker image (specify the Dockerfile in the nest_app folder and tag it for Artifact Registry)
-    - name: Build Docker image
-      run: docker build -f nest_app/Dockerfile -t us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:${{ github.sha }} .
-      working-directory: .
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
 
-    # Push the Docker image to Artifact Registry
-    - name: Push Docker image
-      run: docker push us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:${{ github.sha }}
+      - name: "Docker auth"
+        run: |-
+          gcloud auth configure-docker ${{ secrets.GKE_CLUSTER_ZONE }}-docker.pkg.dev --quiet
 
-    # Deploy to GKE
-    - name: Get GKE credentials
-      run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --zone ${{ secrets.GKE_CLUSTER_ZONE }}
-      
-    # Deploy to GKE
-    - name: Deploy to GKE
-      run: |
-        kubectl set image deployment/nest-app nest-app=us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:${{ github.sha }}
+      - name: Build image
+        run: docker build . --file DOCKERFILE_LOCATION --tag ${{ env.GAR_LOCATION }}
+        working-directory: WORKING_DIRECTORY
+
+      - name: Push image
+        run: docker push ${{ env.GAR_LOCATION }}
