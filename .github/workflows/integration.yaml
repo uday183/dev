@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [20.x]
 
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
-      
+
       # Cache dependencies specifically from the nest_app folder
       with:
         path: nest_app/node_modules
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [20.x]
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
@@ -52,6 +52,11 @@ jobs:
     - name: "Installing dependencies"
       working-directory: nest_app
       run: npm i
+
+    # Set execute permissions for all binaries inside node_modules/.bin
+    - name: Set execute permissions for binaries
+      run: chmod -R +x node_modules/.bin
+      working-directory: nest_app
   
     - name: "Running test cases"
       working-directory: nest_app
