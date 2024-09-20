@@ -36,3 +36,4 @@ CMD ["npm", "run", "start"]
 
 # Indicates that the container will listen on port 3000
 EXPOSE 3000
+
