@@ -10,7 +10,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copy files from your computer into the image
-COPY nest_app/ .
+COPY app/ .
 
 # Install the dependencies
 RUN npm run build
