@@ -18,15 +18,6 @@ jobs:
         service_account_key: ${{ secrets.GCLOUD_KEY }}
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-    # Ensure Artifact Registry or GCR repository exists
-    - name: Ensure Artifact Registry exists
-      run: |
-        gcloud artifacts repositories describe gcr.io --location=us-central1-a || \
-        gcloud artifacts repositories create gcr.io \
-          --repository-format=docker \
-          --location=us-central1-a \
-          --description="Docker repository for Nest App"
-
     # Configure Docker to authenticate with Google Container Registry or Artifact Registry
     - name: Configure Docker to use Google Cloud
       run: gcloud auth configure-docker
@@ -38,7 +29,8 @@ jobs:
 
     # Push the Docker image to Google Container Registry or Artifact Registry
     - name: Push Docker image
-      run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/nest-app:${{ github.sha }}
+      run: docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/nestjs-cicd/nest-app:${{ github.sha }}
+
 
     # Deploy to GKE
     - name: Get GKE credentials
