@@ -29,7 +29,7 @@ jobs:
 
     # Push the Docker image to Artifact Registry
     - name: Push Docker image
-      run: docker push us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app/nest_img
+      run: docker push us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:${{ github.sha }}
 
     # Deploy to GKE
     - name: Get GKE credentials
