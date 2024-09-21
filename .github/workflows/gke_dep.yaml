@@ -1,21 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nestApp
+  name: nest-app  # Changed to lowercase with a dash
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nestApp
+      app: nest-app  # Changed to lowercase with a dash
   template:
     metadata:
       labels:
-        app: nestApp
+        app: nest-app  # Changed to lowercase with a dash
     spec:
       containers:
-      - name: nestApp
+      - name: nest-app  # Changed to lowercase with a dash
         image: us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:latest
-        # This app listens on port 8080 for web traffic by default.
         ports:
         - containerPort: 3000
         env:
