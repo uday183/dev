@@ -82,7 +82,7 @@ jobs:
       working-directory: nest_app
       run: npm ci
 
-    - name: "Run ESLint"
-      working-directory: nest_app
-      run: npx eslint . --max-warnings 0  # Fail if there are any warnings
+    # Run linting
+    - name: Run ESLint
+      run: npm run lint
 
