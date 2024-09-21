@@ -53,4 +53,5 @@ jobs:
     # Deploy to GKE
     - name: Deploy to GKE
       run: |
-         kubectl apply -f dev/.github/workflows/gke_dep.yaml
+         kubectl apply -f .github/workflows/gke_dep.yaml
+      working-directory: ./dev
