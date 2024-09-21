@@ -49,9 +49,11 @@ jobs:
     - name: Get GKE credentials
       run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --zone ${{ secrets.GKE_CLUSTER_ZONE }}
     
-    
-    # Deploy to GKE
-    - name: Deploy to GKE
+    # Deploy GKE
+    - name: deploy to gke
+      env:
+        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
       run: |
-         kubectl apply -f .github/workflows/gke_dep.yaml
-      working-directory: ./dev
+        gcloud container clusters get-credentials autopilot-cluster-1 --region us-central1-a
+        sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" gke_dep.yaml
+        kubectl apply -f gke_dep.yaml
