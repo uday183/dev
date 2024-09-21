@@ -22,10 +22,8 @@ spec:
             value: "3000"
         resources:
           requests:
-            memory: "1Gi"
-            cpu: "500m"
-            ephemeral-storage: "1Gi"
+            memory: "512Mi"  # or "256Mi"
+            cpu: "250m"      # adjust as necessary
           limits:
-            memory: "1Gi"
-            cpu: "500m"
-            ephemeral-storage: "1Gi"
+            memory: "512Mi"  # or "256Mi"
+            cpu: "500m"      # adjust as necessary
