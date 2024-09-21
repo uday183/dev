@@ -45,11 +45,15 @@ jobs:
     - name: Push Docker image
       run: docker push us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:${{ github.sha }}
 
-    # Deploy to GKE
+    # Get GKE credentials
     - name: Get GKE credentials
       run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --zone ${{ secrets.GKE_CLUSTER_ZONE }}
       
-    # Deploy to GKE.
+    # List deployments for debugging (this will help confirm if the deployment exists)
+    - name: List Kubernetes Deployments
+      run: kubectl get deployments --namespace=dev  # Adjust your namespace if needed
+
+    # Deploy to GKE
     - name: Deploy to GKE
       run: |
-        kubectl set image deployment/nest-app nest-app=us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:${{ github.sha }}
+        kubectl set image deployment/nest-app nest-app=us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:${{ github.sha }} --namespace=dev
