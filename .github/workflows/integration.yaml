@@ -61,3 +61,29 @@ jobs:
     - name: "Running test cases"
       working-directory: nest_app
       run: npm run test
+
+  eslint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      
+      with:
+        path: nest_app/node_modules
+        key: ${{ runner.os }}-npm-${{ hashFiles('nest_app/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
+  
+    - name: "Installing dependencies"
+      working-directory: nest_app
+      run: npm ci
+
+    # Run linting
+    - name: Run ESLint
+      working-directory: nest_app
+      run: npm run lint
+
