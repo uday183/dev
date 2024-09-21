@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nestApp-gke
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nestApp
+  template:
+    metadata:
+      labels:
+        app: nestApp
+    spec:
+      containers:
+      - name: nestApp
+        image: us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:latest
+        # This app listens on port 8080 for web traffic by default.
+        ports:
+        - containerPort: 3000
+        env:
+          - name: PORT
+            value: "3000"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+            ephemeral-storage: "1Gi"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+            ephemeral-storage: "1Gi"
