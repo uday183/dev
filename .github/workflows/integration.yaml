@@ -84,5 +84,6 @@ jobs:
 
     # Run linting
     - name: Run ESLint
+      working-directory: nest_app
       run: npm run lint
 
