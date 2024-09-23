@@ -1,9 +1,6 @@
 # Use the official Node.js image as the base image
 FROM node:20
 
-# Create a non-root user
-RUN useradd -m nestuser
-
 # Set the working directory
 WORKDIR /app
 
@@ -13,8 +10,6 @@ COPY nest_app/package*.json ./
 # Install the dependencies
 RUN npm install
 
-# Check permissions of the node_modules/.bin directory
-RUN ls -la node_modules/.bin
 
 # Install Nest CLI globally
 RUN npm install -g @nestjs/cli
