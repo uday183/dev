@@ -22,12 +22,6 @@ RUN npm install -g @nestjs/cli
 # Copy the rest of your application files
 COPY nest_app/ .
 
-# Change ownership of the app files to the non-root user
-RUN chown -R nestuser:nestuser /app
-
-# Switch to the non-root user
-USER nestuser
-
 # Build the application using shell
 RUN sh -c "npm run build"
 
