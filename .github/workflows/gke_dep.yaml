@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nest-app  # Changed to lowercase with a dash
+  name: nest-app  
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nest-app  # Changed to lowercase with a dash
+      app: nest-app  
   template:
     metadata:
       labels:
-        app: nest-app  # Changed to lowercase with a dash
+        app: nest-app  
     spec:
       containers:
-      - name: nest-app  # Changed to lowercase with a dash
+      - name: nest-app  
         image: us-central1-docker.pkg.dev/adev-spark/nestjs-cicd/nest-app:latest
         ports:
         - containerPort: 3000
