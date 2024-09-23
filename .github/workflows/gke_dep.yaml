@@ -27,3 +27,17 @@ spec:
           limits:
             memory: "256Mi"  # or "256Mi"
             cpu: "100m"      # adjust as necessary
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nest-app-service  # You can name it appropriately
+spec:
+  type: LoadBalancer  # This exposes the service externally with a cloud load balancer
+  selector:
+    app: nest-app  # Matches the app label from the Deployment
+  ports:
+    - protocol: TCP
+      port: 80  # External port
+      targetPort: 3000  # Port where the NestJS app is running inside the container
