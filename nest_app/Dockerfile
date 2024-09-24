@@ -23,5 +23,5 @@ RUN sh -c "npm run build"
 # Specifies what command to run within the container
 CMD ["npm", "run", "start"]
 
-# Indicates that the container will listen on port 3000
+# Indicates that the container will listen on port 30000..
 EXPOSE 3000
